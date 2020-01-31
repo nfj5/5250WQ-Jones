@@ -36,7 +36,7 @@ namespace Mine.Views
         async void Save_Clicked(object sender, EventArgs e)
         {
             MessagingCenter.Send(this, "Update", ViewModel.Data);
-            Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
+            await Navigation.PushModalAsync(new NavigationPage(new ItemIndexPage()));
             await Navigation.PopAsync();
         }
 
@@ -47,9 +47,13 @@ namespace Mine.Views
         /// <param name="e"></param>
         async void Cancel_Clicked(object sender, EventArgs e)
         {
-            Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-
+            await Navigation.PushModalAsync(new NavigationPage(new ItemIndexPage()));
             await Navigation.PopAsync();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
         }
         void Value_OnStepperValueChanged(object sender, ValueChangedEventArgs e)
         {
