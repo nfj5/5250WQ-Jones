@@ -61,6 +61,26 @@ namespace Mine.Services
             return (result == 1);
         }
 
-        
+        /// <summary>
+        /// Return the record for the ID passed in
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ItemModel> ReadAsync(string id)
+        {
+            ItemModel data;
+
+            try
+            {
+                data = await Database.Table<ItemModel>().Where((ItemModel arg) => ((ItemModel)(object)arg).Id.Equals(id)).FirstOrDefaultAsync();
+            }
+            catch (Exception)
+            {
+                data = default(ItemModel);
+            }
+
+            return data;
+        }
+
     }
 }
