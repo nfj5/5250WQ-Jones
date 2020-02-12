@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Mine.ViewModels
 {
@@ -16,6 +17,22 @@ namespace Mine.ViewModels
     /// </summary>
     public class ItemIndexViewModel : BaseViewModel
     {
+        #region Attributes
+
+        // The mock data source
+        private IDataStore<ItemModel> DataSource_Mock => new MockDataStore();
+
+        // The SQL data source
+        private IDataStore<ItemModel> DataSource_SQL => new DatabaseService();
+
+        // Accessible data source (switches between mock and SQL)
+        public IDataStore<ItemModel> DataStore;
+
+        // Which source we are using right now
+        public int CurrentDataSource = 0;
+
+        #endregion Attributes
+
         #region Singleton
 
         private static volatile ItemIndexViewModel instance;
@@ -45,15 +62,13 @@ namespace Mine.ViewModels
         // The Data set of records
         public ObservableCollection<ItemModel> Dataset { get; set; }
 
-        /// <summary>
-        /// Connection to the Data store
-        /// </summary>
-        public IDataStore<ItemModel> DataStore => DependencyService.Get<IDataStore<ItemModel>>();
 
         // Command to force a Load of data
         public Command LoadDatasetCommand { get; set; }
 
         private bool _needsRefresh;
+
+        #region Constructor
 
         /// <summary>
         /// Constructor
@@ -85,7 +100,59 @@ namespace Mine.ViewModels
                 data.Update(data);
                 await Update(data as ItemModel);
             });
+
+            // Register the Set Data Source Message
+            MessagingCenter.Subscribe<AboutPage, int>(this, "SetDataSource", async (obj, data) =>
+            {
+                await SetDataSource(data);
+            });
         }
+
+        #endregion Constructor
+
+        #region DataSource
+
+        async public Task<bool> SetDataSource(int isSQL)
+        {
+            if (isSQL == 1)
+            {
+                DataStore = DataSource_SQL;
+                CurrentDataSource = 1;
+            }
+            else
+            {
+                DataStore = DataSource_Mock;
+                CurrentDataSource = 0;
+            }
+
+            await LoadDefaultDataAsync();
+
+            SetNeedsRefresh(true);
+
+            return await Task.FromResult(true);
+        }
+
+        public async Task<bool> LoadDefaultDataAsync()
+        {
+            if (Dataset.Count > 0)
+            {
+                return false;
+            }
+
+            foreach (var data in GetDefaultData())
+            {
+                await CreateUpdateAsync();
+            }
+
+            return true;
+        }
+
+        public virtual List<ItemModel> GetDefaultData()
+        {
+            return new List<ItemModel>();
+        }
+
+        #endregion DataSource
 
         /// <summary>
         /// API to add the Data
