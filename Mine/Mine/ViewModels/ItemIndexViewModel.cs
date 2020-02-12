@@ -123,6 +123,16 @@ namespace Mine.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sort the dataset by Name
+        /// </summary>
+        /// <param name="dataset"></param>
+        /// <returns></returns>
+        public virtual List<ItemModel> SortDataSet(List<ItemModel> dataset)
+        {
+            return dataset.OrderBy(a => a.Name).ToList();
+        }
+
         #endregion Refresh
 
         /// <summary>
