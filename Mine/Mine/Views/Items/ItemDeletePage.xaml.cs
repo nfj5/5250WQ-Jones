@@ -24,6 +24,8 @@ namespace Mine.Views
             InitializeComponent();
 
             BindingContext = this.viewModel = data;
+
+            this.viewModel.Title = "Delete " + data.Title;
         }
 
         /// <summary>
@@ -34,9 +36,7 @@ namespace Mine.Views
         async void Delete_Clicked(object sender, EventArgs e)
         {
             MessagingCenter.Send(this, "Delete", viewModel.Data);
-
-            await Navigation.PushModalAsync(new NavigationPage(new ItemIndexPage()));
-            await Navigation.PopAsync();
+            await Navigation.PopModalAsync();
         }
 
         /// <summary>
@@ -46,10 +46,13 @@ namespace Mine.Views
         /// <param name="e"></param>
         async void Cancel_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new ItemIndexPage()));
-            await Navigation.PopAsync();
+            await Navigation.PopModalAsync();
         }
 
+        /// <summary>
+        /// Overrride the default back button behavior
+        /// </summary>
+        /// <returns></returns>
         protected override bool OnBackButtonPressed()
         {
             return true;
