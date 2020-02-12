@@ -99,5 +99,14 @@ namespace Mine.Services
         {
             return await Task.FromResult(datalist);
         }
+
+        /// <summary>
+        /// Wipes the current Data from the Data Store
+        /// </summary>
+        public async Task<bool> WipeDataListAsync()
+        {
+            datalist.Clear();
+            return await Task.FromResult(true);
+        }
     }
 }

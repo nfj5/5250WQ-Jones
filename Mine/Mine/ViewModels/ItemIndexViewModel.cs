@@ -123,6 +123,12 @@ namespace Mine.ViewModels
             {
                 await SetDataSource(data);
             });
+
+            // Register the Wipe Data List Message
+            MessagingCenter.Subscribe<AboutPage, bool>(this, "WipeDataList", async (obj, data) =>
+            {
+                await WipeDataListAsync();
+            });
         }
 
         #endregion Constructor
@@ -373,6 +379,21 @@ namespace Mine.ViewModels
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Wipes the current Data from the Data Store
+        /// </summary>
+        public async Task<bool> WipeDataListAsync()
+        {
+            await DataStore.WipeDataListAsync();
+
+            // Load the Sample Data
+            await LoadDefaultDataAsync();
+
+            SetNeedsRefresh(true);
+
+            return await Task.FromResult(true);
         }
 
         #endregion CRUDi
