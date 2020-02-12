@@ -99,5 +99,10 @@ namespace Mine.Services
         {
             return await Task.FromResult(datalist);
         }
+
+        Task<List<ItemModel>> IDataStore<ItemModel>.IndexAsync(bool forceRefresh)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

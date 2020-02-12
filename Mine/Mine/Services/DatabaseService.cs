@@ -150,5 +150,10 @@ namespace Mine.Services
         {
             throw new NotImplementedException();
         }
+
+        Task<List<ItemModel>> IDataStore<ItemModel>.IndexAsync(bool forceRefresh)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
