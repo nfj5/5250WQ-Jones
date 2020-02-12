@@ -31,6 +31,21 @@ namespace Mine.ViewModels
         // Which source we are using right now
         public int CurrentDataSource = 0;
 
+        // The Data set of records
+        public ObservableCollection<ItemModel> Dataset { get; set; }
+
+        // Command to force a Load of data
+        public Command LoadDatasetCommand { get; set; }
+
+        private bool _needsRefresh;
+
+        bool isBusy = false;
+        public bool IsBusy
+        {
+            get { return isBusy; }
+            set { SetProperty(ref isBusy, value); }
+        }
+
         #endregion Attributes
 
         #region Singleton
@@ -58,15 +73,6 @@ namespace Mine.ViewModels
         }
 
         #endregion Singleton
-
-        // The Data set of records
-        public ObservableCollection<ItemModel> Dataset { get; set; }
-
-
-        // Command to force a Load of data
-        public Command LoadDatasetCommand { get; set; }
-
-        private bool _needsRefresh;
 
         #region Constructor
 
