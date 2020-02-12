@@ -95,7 +95,7 @@ namespace Mine.Services
         /// </summary>
         /// <param name="forceRefresh"></param>
         /// <returns></returns>
-        public async Task<List<ItemModel>> IndexAsync(bool forceRefresh = false)
+        public async Task<List<ItemModel>> IndexAsync()
         {
             return await Task.FromResult(datalist);
         }
