@@ -86,50 +86,6 @@ namespace Mine.ViewModels
 
         #endregion Constructor
 
-        #region DataSource
-
-        async public Task<bool> SetDataSource(int isSQL)
-        {
-            if (isSQL == 1)
-            {
-                DataStore = DataSource_SQL;
-                CurrentDataSource = 1;
-            }
-            else
-            {
-                DataStore = DataSource_Mock;
-                CurrentDataSource = 0;
-            }
-
-            await LoadDefaultDataAsync();
-
-            SetNeedsRefresh(true);
-
-            return await Task.FromResult(true);
-        }
-
-        public async Task<bool> LoadDefaultDataAsync()
-        {
-            if (Dataset.Count > 0)
-            {
-                return false;
-            }
-
-            foreach (var data in GetDefaultData())
-            {
-                await CreateUpdateAsync();
-            }
-
-            return true;
-        }
-
-        public virtual List<ItemModel> GetDefaultData()
-        {
-            return new List<ItemModel>();
-        }
-
-        #endregion DataSource
-
         /// <summary>
         /// API to add the Data
         /// </summary>
