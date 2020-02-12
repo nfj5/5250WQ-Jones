@@ -86,6 +86,45 @@ namespace Mine.ViewModels
 
         #endregion Constructor
 
+        #region Refresh
+
+        /// <summary>
+        /// Command to load the data
+        /// </summary>
+        /// <returns></returns>
+        private async Task ExecuteLoadDataCommand()
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                Dataset.Clear();
+                var dataset = await DataStore.IndexAsync();
+
+                dataset = SortDataset(dataset);
+
+                foreach (var data in dataset)
+                {
+                    Dataset.Add(data);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        #endregion Refresh
+
         /// <summary>
         /// API to add the Data
         /// </summary>
