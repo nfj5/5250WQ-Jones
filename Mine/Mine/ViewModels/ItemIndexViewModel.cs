@@ -17,43 +17,6 @@ namespace Mine.ViewModels
     /// </summary>
     public class ItemIndexViewModel : BaseViewModel
     {
-        #region Attributes
-
-        // The mock data source
-        private IDataStore<ItemModel> DataSource_Mock => new MockDataStore();
-
-        // The SQL data source
-        private IDataStore<ItemModel> DataSource_SQL => new DatabaseService();
-
-        // Accessible data source (switches between mock and SQL)
-        public IDataStore<ItemModel> DataStore;
-
-        // Which source we are using right now
-        public int CurrentDataSource = 0;
-
-        // The Data set of records
-        public ObservableCollection<ItemModel> Dataset { get; set; }
-
-        // Command to force a Load of data
-        public Command LoadDatasetCommand { get; set; }
-
-        private bool _needsRefresh;
-
-        bool isBusy = false;
-        public bool IsBusy
-        {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
-        }
-
-        string title = string.Empty;
-        public string Title
-        {
-            get { return title; }
-            set { SetProperty(ref title, value); }
-        }
-
-        #endregion Attributes
 
         #region Singleton
 

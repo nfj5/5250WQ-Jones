@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Mine.Models;
+using Mine.Services;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -10,6 +13,28 @@ namespace Mine.ViewModels
     /// </summary>
     public class BaseViewModel : INotifyPropertyChanged
     {
+
+        // The mock data source
+        private IDataStore<ItemModel> DataSource_Mock => new MockDataStore();
+
+        // The SQL data source
+        private IDataStore<ItemModel> DataSource_SQL => new DatabaseService();
+
+        // Accessible data source (switches between mock and SQL)
+        public IDataStore<ItemModel> DataStore;
+        
+        // Which source we are using right now
+        public int CurrentDataSource = 0;
+
+        // The Data set of records
+        public ObservableCollection<ItemModel> Dataset { get; set; }
+
+        // Track if the system needs refreshing
+        public bool _needsRefresh;
+
+        // Command to force a Load of data
+        public Command LoadDatasetCommand { get; set; }
+
         /// <summary>
         /// Mark if the view model is busy loading or done loading
         /// </summary>
