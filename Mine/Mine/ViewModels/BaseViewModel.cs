@@ -1,11 +1,7 @@
-﻿using Mine.Models;
-using Mine.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Xamarin.Forms;
 
 namespace Mine.ViewModels
 {
@@ -14,28 +10,6 @@ namespace Mine.ViewModels
     /// </summary>
     public class BaseViewModel : INotifyPropertyChanged
     {
-
-        // The mock data source
-        private IDataStore<ItemModel> DataSource_Mock => new MockDataStore();
-
-        // The SQL data source
-        private IDataStore<ItemModel> DataSource_SQL => new DatabaseService();
-
-        // Accessible data source (switches between mock and SQL)
-        public IDataStore<ItemModel> DataStore;
-        
-        // Which source we are using right now
-        public int CurrentDataSource = 0;
-
-        // The Data set of records
-        public ObservableCollection<ItemModel> Dataset { get; set; }
-
-        // Track if the system needs refreshing
-        public bool _needsRefresh;
-
-        // Command to force a Load of data
-        public Command LoadDatasetCommand { get; set; }
-
         /// <summary>
         /// Mark if the view model is busy loading or done loading
         /// </summary>
@@ -55,62 +29,6 @@ namespace Mine.ViewModels
             get { return title; }
             set { SetProperty(ref title, value); }
         }
-
-        public BaseViewModel()
-        {
-        }
-
-        public async void Initialize()
-        {
-            Dataset = new ObservableCollection<ItemModel>();
-            LoadDatasetCommand = new Command(async () => await ExecuteLoadDataCommand());
-
-            await SetDataSource(CurrentDataSource);
-        }
-
-        #region DataSource
-
-        async public Task<bool> SetDataSource(int isSQL)
-        {
-            if (isSQL == 1)
-            {
-                DataStore = DataSource_SQL;
-                CurrentDataSource = 1;
-            }
-            else
-            {
-                DataStore = DataSource_Mock;
-                CurrentDataSource = 0;
-            }
-
-            await LoadDefaultDataAsync();
-
-            SetNeedsRefresh(true);
-
-            return await Task.FromResult(true);
-        }
-
-        public async Task<bool> LoadDefaultDataAsync()
-        {
-            if (Dataset.Count > 0)
-            {
-                return false;
-            }
-
-            foreach (var data in GetDefaultData())
-            {
-                await CreateUpdateAsync();
-            }
-
-            return true;
-        }
-
-        public virtual List<ItemModel> GetDefaultData()
-        {
-            return new List<ItemModel>();
-        }
-
-        #endregion DataSource
 
         /// <summary>
         /// Tracking what has changed in the dataset
