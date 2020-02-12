@@ -16,6 +16,32 @@ namespace Mine.ViewModels
     /// </summary>
     public class ItemIndexViewModel : BaseViewModel
     {
+        #region Singleton
+
+        private static volatile ItemIndexViewModel instance;
+        private static readonly object syncRoot = new Object();
+
+        public static ItemIndexViewModel Instance
+        {
+            get {
+                if (instance == null)
+                {
+                    lock (syncRoot)
+                    {
+                        if (instance == null)
+                        {
+                            instance = new ItemIndexViewModel();
+                            instance.Initialize();
+                        }
+                    }
+                }
+
+                return instance;
+            };
+        }
+
+        #endregion Singleton
+
         // The Data set of records
         public ObservableCollection<ItemModel> Dataset { get; set; }
 
@@ -56,6 +82,7 @@ namespace Mine.ViewModels
             // Register the Update Message
             MessagingCenter.Subscribe<ItemUpdatePage, ItemModel>(this, "Update", async (obj, data) =>
             {
+                data.Update(data);
                 await Update(data as ItemModel);
             });
         }
