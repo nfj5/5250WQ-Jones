@@ -316,7 +316,7 @@ namespace Mine.ViewModels
         public async Task<bool> UpdateAsync(ItemModel data)
         {
             // Check that the record exists, if it does not, then exit with false
-            var record = await ReadAsync(((ItemModel)(object)data).Id);
+            var record = await ReadAsync(data.Id);
             if (record == null)
             {
                 return false;
@@ -337,8 +337,9 @@ namespace Mine.ViewModels
         /// <returns></returns>
         public async Task<bool> DeleteAsync(ItemModel data)
         {
+            Console.WriteLine(data.Id);
             // Check that the record exists, if it does not, then exit with false
-            var record = await ReadAsync(((ItemModel)(object)data).Id);
+            var record = await ReadAsync(data.Id);
             if (record == null)
             {
                 return false;
@@ -348,7 +349,7 @@ namespace Mine.ViewModels
             Dataset.Remove(data);
 
             // Have the record deleted from the data source
-            var result = await DataStore.DeleteAsync(((ItemModel)(object)record).Id);
+            var result = await DataStore.DeleteAsync(record.Id);
 
             SetNeedsRefresh(true);
 
@@ -364,7 +365,7 @@ namespace Mine.ViewModels
         public async Task<bool> CreateUpdateAsync(ItemModel data)
         {
             // Check to see if the data exist
-            var oldData = await ReadAsync(((ItemModel)(object)data).Id);
+            var oldData = await ReadAsync(data.Id);
             if (oldData == null)
             {
                 await CreateAsync(data);
