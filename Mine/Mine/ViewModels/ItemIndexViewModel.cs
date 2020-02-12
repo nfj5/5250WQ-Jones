@@ -17,6 +17,50 @@ namespace Mine.ViewModels
     /// </summary>
     public class ItemIndexViewModel : BaseViewModel
     {
+        #region Attributes
+
+        // The Mock DataStore
+        private IDataStore<ItemModel> DataSource_Mock => new MockDataStore();
+
+        // The SQL DataStore
+        private IDataStore<ItemModel> DataSource_SQL => new DatabaseService();
+
+        // Which DataStore to use
+        public IDataStore<ItemModel> DataStore;
+
+        // The Data set of records
+        public ObservableCollection<ItemModel> Dataset { get; set; }
+
+        // Tack the current data source, SQL, Mock
+        public int CurrentDataSource = 0;
+
+        // Track if the system needs refreshing
+        public bool _needsRefresh;
+
+        // Command to force a Load of data
+        public Command LoadDatasetCommand { get; set; }
+
+        /// <summary>
+        /// Mark if the view model is busy loading or done loading
+        /// </summary>
+        bool isBusy = false;
+        public bool IsBusy
+        {
+            get { return isBusy; }
+            set { SetProperty(ref isBusy, value); }
+        }
+
+        /// <summary>
+        /// The String to show on the page
+        /// </summary>
+        string title = string.Empty;
+        public string Title
+        {
+            get { return title; }
+            set { SetProperty(ref title, value); }
+        }
+
+        #endregion Attributes
 
         #region Singleton
 
@@ -39,7 +83,7 @@ namespace Mine.ViewModels
                 }
 
                 return instance;
-            };
+            }
         }
 
         #endregion Singleton
@@ -54,9 +98,6 @@ namespace Mine.ViewModels
         public ItemIndexViewModel()
         {
             Title = "Items";
-
-            Dataset = new ObservableCollection<ItemModel>();
-            LoadDatasetCommand = new Command(async () => await ExecuteLoadDataCommand());
 
             // Register the Create Message
             MessagingCenter.Subscribe<ItemCreatePage, ItemModel>(this, "Create", async (obj, data) =>
@@ -86,12 +127,71 @@ namespace Mine.ViewModels
 
         #endregion Constructor
 
+        /// <summary>
+        /// Initialize the ViewModel
+        /// Sets the collection Dataset
+        /// Sets the Load command
+        /// Sets the default data source
+        /// </summary>
+        public async void Initialize()
+        {
+            Dataset = new ObservableCollection<ItemModel>();
+            LoadDatasetCommand = new Command(async () => await ExecuteLoadDataCommand());
+
+            await SetDataSource(CurrentDataSource);   // Set to Mock to start with
+        }
+
+        #region DataSource
+
+        async public Task<bool> SetDataSource(int isSQL)
+        {
+            if (isSQL == 1)
+            {
+                DataStore = DataSource_SQL;
+                CurrentDataSource = 1;
+            }
+            else
+            {
+                DataStore = DataSource_Mock;
+                CurrentDataSource = 0;
+            }
+
+            await LoadDefaultDataAsync();
+
+            SetNeedsRefresh(true);
+
+            return await Task.FromResult(true);
+        }
+
+        public async Task<bool> LoadDefaultDataAsync()
+        {
+            if (Dataset.Count > 0)
+            {
+                return false;
+            }
+
+            foreach (var data in GetDefaultData())
+            {
+                await CreateUpdateAsync(data);
+            }
+
+            return true;
+        }
+
+        public virtual List<ItemModel> GetDefaultData()
+        {
+            return new List<ItemModel>();
+        }
+
+        #endregion DataSource
+
         #region Refresh
 
         /// <summary>
         /// Command to load the data
         /// </summary>
         /// <returns></returns>
+       // [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private async Task ExecuteLoadDataCommand()
         {
             if (IsBusy)
@@ -106,7 +206,7 @@ namespace Mine.ViewModels
                 Dataset.Clear();
                 var dataset = await DataStore.IndexAsync();
 
-                dataset = SortDataset(dataset);
+                dataset = SortDataSet(dataset);
 
                 foreach (var data in dataset)
                 {
@@ -133,7 +233,100 @@ namespace Mine.ViewModels
             return dataset.OrderBy(a => a.Name).ToList();
         }
 
+        // Indicated whether or not to refresh
+        public void SetNeedsRefresh(bool value)
+        {
+            _needsRefresh = value;
+        }
+
+        /// <summary>
+        /// Force the data to be refreshed
+        /// </summary>
+        public void ForceDataRefresh()
+        {
+            var canExecute = LoadDatasetCommand.CanExecute(null);
+            LoadDatasetCommand.Execute(null);
+        }
+
         #endregion Refresh
+
+        #region CRUDi
+
+        /// <summary>
+        /// API to add the Data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public async Task<bool> CreateAsync(ItemModel data)
+        {
+            Dataset.Add(data);
+            var result = await DataStore.CreateAsync(data);
+
+            SetNeedsRefresh(true);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get the data
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ItemModel> ReadAsync(string id)
+        {
+            var myData = await DataStore.ReadAsync(id);
+            return myData;
+        }
+
+        /// <summary>
+        /// Update the data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateAsync(ItemModel data)
+        {
+            // Check that the record exists, if it does not, then exit with false
+            var record = await ReadAsync(((ItemModel)(object)data).Id);
+            if (record == null)
+            {
+                return false;
+            }
+
+            // Save the change to the Data Store
+            var result = await DataStore.UpdateAsync(record);
+
+            SetNeedsRefresh(true);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Having this at the ViewModel, because it has the DataStore
+        /// That allows the feature to work for both SQL and the Mock datastores...
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public async Task<bool> CreateUpdateAsync(ItemModel data)
+        {
+            // Check to see if the data exist
+            var oldData = await ReadAsync(((ItemModel)(object)data).Id);
+            if (oldData == null)
+            {
+                await CreateAsync(data);
+                return true;
+            }
+
+            // Compare it, if different update in the DB
+            var UpdateResult = await UpdateAsync(data);
+            if (UpdateResult)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion CRUDi
 
         /// <summary>
         /// API to add the Data
@@ -199,73 +392,5 @@ namespace Mine.ViewModels
 
             return result;
         }
-
-        #region Refresh
-        // Return True if a refresh is needed
-        // It sets the refresh flag to false
-        public bool NeedsRefresh()
-        {
-            if (_needsRefresh)
-            {
-                _needsRefresh = false;
-                return true;
-            }
-
-            return false;
-        }
-
-        // Sets the need to refresh
-        public void SetNeedsRefresh(bool value)
-        {
-            _needsRefresh = value;
-        }
-
-        // Command that Loads the Data
-        private async Task ExecuteLoadDataCommand()
-        {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-
-            try
-            {
-                Dataset.Clear();
-                var dataset = await DataStore.IndexAsync(true);
-
-                // Example of how to sort the database output using a linq query.
-                // Sort the list
-                dataset = dataset
-                    .OrderBy(a => a.Name)
-                    .ThenBy(a => a.Description)
-                    .ToList();
-
-                foreach (var data in dataset)
-                {
-                    Dataset.Add(data);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        /// <summary>
-        /// Force data to refresh
-        /// </summary>
-        public void ForceDataRefresh()
-        {
-            // Reset
-            var canExecute = LoadDatasetCommand.CanExecute(null);
-            LoadDatasetCommand.Execute(null);
-        }
-        #endregion Refresh
     }
 }
