@@ -102,20 +102,20 @@ namespace Mine.ViewModels
             // Register the Create Message
             MessagingCenter.Subscribe<ItemCreatePage, ItemModel>(this, "Create", async (obj, data) =>
             {
-                await CreateAsync(data as ItemModel);
+                await Add(data as ItemModel);
             });
 
             // Register the Delete Message
             MessagingCenter.Subscribe<ItemDeletePage, ItemModel>(this, "Delete", async (obj, data) =>
             {
-                await DeleteAsync(data as ItemModel);
+                await Delete(data as ItemModel);
             });
 
             // Register the Update Message
             MessagingCenter.Subscribe<ItemUpdatePage, ItemModel>(this, "Update", async (obj, data) =>
             {
                 data.Update(data);
-                await UpdateAsync(data as ItemModel);
+                await Update(data as ItemModel);
             });
 
             // Register the Set Data Source Message
@@ -143,6 +143,11 @@ namespace Mine.ViewModels
 
         #region DataSource
 
+        /// <summary>
+        /// Update the data source
+        /// </summary>
+        /// <param name="isSQL"></param>
+        /// <returns></returns>
         async public Task<bool> SetDataSource(int isSQL)
         {
             if (isSQL == 1)
@@ -163,6 +168,10 @@ namespace Mine.ViewModels
             return await Task.FromResult(true);
         }
 
+        /// <summary>
+        /// Load the default data asynchronously
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> LoadDefaultDataAsync()
         {
             if (Dataset.Count > 0)
@@ -178,9 +187,13 @@ namespace Mine.ViewModels
             return true;
         }
 
+        /// <summary>
+        /// Load the default data for the model
+        /// </summary>
+        /// <returns></returns>
         public virtual List<ItemModel> GetDefaultData()
         {
-            return DataStore.IndexAsync().Result;
+            return DataStore.IndexAsync().Result.ToList<ItemModel>();
         }
 
         #endregion DataSource
@@ -237,6 +250,17 @@ namespace Mine.ViewModels
         public void SetNeedsRefresh(bool value)
         {
             _needsRefresh = value;
+        }
+
+        public bool NeedsRefresh()
+        {
+            if (_needsRefresh)
+            {
+                _needsRefresh = false;
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

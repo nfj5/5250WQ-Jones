@@ -68,11 +68,21 @@ namespace Mine.Views
         {
             base.OnAppearing();
 
+            BindingContext = null;
+
             // If no data, then reload the data
             if (viewModel.Dataset.Count == 0)
             {
+                viewModel.SetNeedsRefresh(true);
+            }
+
+            // Refresh if flag is set
+            if (viewModel.NeedsRefresh())
+            {
                 viewModel.LoadDatasetCommand.Execute(null);
             }
+
+            BindingContext = viewModel;
         }
     }
 }

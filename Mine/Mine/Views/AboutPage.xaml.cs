@@ -29,7 +29,7 @@ namespace Mine.Views
         /// <param name="e"></param>
         void SQLDataSourceSwitch_OnToggled(object sender, ToggledEventArgs e)
         {
-            if (DataSourceValue.IsToggled)
+            if (DataSourceValue.IsToggled == true)
             {
                 MessagingCenter.Send(this, "SetDataSource", 1);
             }
