@@ -145,15 +145,5 @@ namespace Mine.Services
 
             return await Task.FromResult(true);
         }
-
-        public Task<IEnumerable<ItemModel>> IndexAsync(bool forceRefresh = false)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<List<ItemModel>> IDataStore<ItemModel>.IndexAsync(bool forceRefresh)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

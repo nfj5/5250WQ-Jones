@@ -42,14 +42,14 @@
                 <StackLayout Grid.Row="3" Orientation="Horizontal">
                     <Label Text="SQL Data Source"/>
                     <Switch x:Name="DataSourceValue"
-                    HorizontalOptions="EndAndExpand"
-                    Toggled="SQLDataSourceSwitch_OnToggled"
-                    IsToggled="False"/>
+                            HorizontalOptions="EndAndExpand"
+                            Toggled="SQLDataSourceSwitch_OnToggled"
+                            IsToggled="{Binding ItemIndexViewModel.Instance.CurrentDataSource}"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal">
                     <Label Text="Wipe Data List"/>
                     <Button Text="Wipe"
-                    Clicked="WipeDataList_Clicked"/>
+                            Clicked="WipeDataList_Clicked"/>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

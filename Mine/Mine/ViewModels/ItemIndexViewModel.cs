@@ -102,20 +102,20 @@ namespace Mine.ViewModels
             // Register the Create Message
             MessagingCenter.Subscribe<ItemCreatePage, ItemModel>(this, "Create", async (obj, data) =>
             {
-                await Add(data as ItemModel);
+                await CreateAsync(data as ItemModel);
             });
 
             // Register the Delete Message
             MessagingCenter.Subscribe<ItemDeletePage, ItemModel>(this, "Delete", async (obj, data) =>
             {
-                await Delete(data as ItemModel);
+                await DeleteAsync(data as ItemModel);
             });
 
             // Register the Update Message
             MessagingCenter.Subscribe<ItemUpdatePage, ItemModel>(this, "Update", async (obj, data) =>
             {
                 data.Update(data);
-                await Update(data as ItemModel);
+                await UpdateAsync(data as ItemModel);
             });
 
             // Register the Set Data Source Message
@@ -180,7 +180,7 @@ namespace Mine.ViewModels
 
         public virtual List<ItemModel> GetDefaultData()
         {
-            return new List<ItemModel>();
+            return DataStore.IndexAsync().Result;
         }
 
         #endregion DataSource
