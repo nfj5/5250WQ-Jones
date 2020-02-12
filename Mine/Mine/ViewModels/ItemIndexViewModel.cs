@@ -230,7 +230,7 @@ namespace Mine.ViewModels
         /// <returns></returns>
         public virtual List<ItemModel> SortDataSet(List<ItemModel> dataset)
         {
-            return dataset.OrderBy(a => a.Name).ToList();
+            return dataset.OrderBy(a => a.Name).ThenBy(a => a.Description).ToList();
         }
 
         // Indicated whether or not to refresh
