@@ -11,7 +11,7 @@ namespace Mine.Services
     /// Database Services
     /// Will write to the local data store
     /// </summary>
-    public class DatabaseService
+    public class DatabaseService: IDataStore<ItemModel>
     {
         /// <summary>
         /// Set the class to load on demand
@@ -144,6 +144,11 @@ namespace Mine.Services
             }
 
             return await Task.FromResult(true);
+        }
+
+        public Task<IEnumerable<ItemModel>> IndexAsync(bool forceRefresh = false)
+        {
+            throw new NotImplementedException();
         }
     }
 }
