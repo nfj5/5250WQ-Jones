@@ -50,5 +50,17 @@ namespace Mine.Services
             }
         }
 
+        /// <summary>
+        /// Create a new record for the data passed in
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public async Task<bool> CreateAsync(ItemModel data)
+        {
+            var result = await Database.InsertAsync(data);
+            return (result == 1);
+        }
+
+        
     }
 }
