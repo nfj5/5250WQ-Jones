@@ -301,6 +301,31 @@ namespace Mine.ViewModels
         }
 
         /// <summary>
+        /// Delete the data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteAsync(ItemModel data)
+        {
+            // Check that the record exists, if it does not, then exit with false
+            var record = await ReadAsync(((ItemModel)(object)data).Id);
+            if (record == null)
+            {
+                return false;
+            }
+
+            // remove the record from the current data set in the viewmodel
+            Dataset.Remove(data);
+
+            // Have the record deleted from the data source
+            var result = await DataStore.DeleteAsync(((ItemModel)(object)record).Id);
+
+            SetNeedsRefresh(true);
+
+            return result;
+        }
+
+        /// <summary>
         /// Having this at the ViewModel, because it has the DataStore
         /// That allows the feature to work for both SQL and the Mock datastores...
         /// </summary>
