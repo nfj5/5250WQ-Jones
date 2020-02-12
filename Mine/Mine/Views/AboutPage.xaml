@@ -37,6 +37,20 @@
                 <Label Text="CPSC 5250 WQ20"></Label>
                 <Label Text="Nicholas Jones"></Label>
                 <Label x:Name="CurrentDateTime"></Label>
+                
+                <Label Text="Database Settings" FontSize="Large"/>
+                <StackLayout Grid.Row="3" Orientation="Horizontal">
+                    <Label Text="SQL Data Source"/>
+                    <Switch x:Name="DataSourceValue"
+                    HorizontalOptions="EndAndExpand"
+                    Toggled="SQLDataSourceSwitch_OnToggled"
+                    IsToggled="False"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Wipe Data List"/>
+                    <Button Text="Wipe"
+                    Clicked="WipeDataList_Clicked"/>
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </Grid>
