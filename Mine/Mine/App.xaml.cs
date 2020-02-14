@@ -1,6 +1,7 @@
 ﻿using Xamarin.Forms;
 using Mine.Services;
 using Mine.Views;
+using Mine.ViewModels;
 
 namespace Mine
 {
@@ -15,6 +16,9 @@ namespace Mine
         public App()
         {
             InitializeComponent();
+            
+            // To initialize the ItemIndexViewModel before use
+            ItemIndexViewModel temp = ItemIndexViewModel.Instance;
 
             // Call the Main Page to open
             MainPage = new MainPage();

@@ -72,7 +72,7 @@ namespace Mine.Services
 
             try
             {
-                data = await Database.Table<ItemModel>().Where((ItemModel arg) => ((ItemModel)(object)arg).Id.Equals(id)).FirstOrDefaultAsync();
+                data = await Database.Table<ItemModel>().Where(i => i.Id.Equals(id)).FirstOrDefaultAsync();
             }
             catch (Exception)
             {
@@ -89,7 +89,7 @@ namespace Mine.Services
         /// <returns></returns>
         public async Task<bool> UpdateAsync(ItemModel data)
         {
-            var myRead = await ReadAsync(((ItemModel)(object)data).Id);
+            var myRead = await ReadAsync(data.Id);
             if (myRead == null)
             {
                 return false;

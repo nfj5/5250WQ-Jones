@@ -102,20 +102,19 @@ namespace Mine.ViewModels
             // Register the Create Message
             MessagingCenter.Subscribe<ItemCreatePage, ItemModel>(this, "Create", async (obj, data) =>
             {
-                await CreateAsync(data as ItemModel);
+                await Add(data as ItemModel);
             });
 
             // Register the Delete Message
             MessagingCenter.Subscribe<ItemDeletePage, ItemModel>(this, "Delete", async (obj, data) =>
             {
-                await DeleteAsync(data as ItemModel);
+                await Delete(data as ItemModel);
             });
 
             // Register the Update Message
             MessagingCenter.Subscribe<ItemUpdatePage, ItemModel>(this, "Update", async (obj, data) =>
             {
-                data.Update(data);
-                await UpdateAsync(data as ItemModel);
+                await Update(data as ItemModel);
             });
 
             // Register the Set Data Source Message
@@ -337,7 +336,6 @@ namespace Mine.ViewModels
         /// <returns></returns>
         public async Task<bool> DeleteAsync(ItemModel data)
         {
-            Console.WriteLine(data.Id);
             // Check that the record exists, if it does not, then exit with false
             var record = await ReadAsync(data.Id);
             if (record == null)
