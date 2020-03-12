@@ -1,6 +1,8 @@
 package com.example.getitems;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -10,9 +12,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.getitems.dummy.ItemViewModel;
+import com.example.getitems.models.ItemViewModel;
 
 /**
  * A fragment representing a single ItemModel detail screen.
@@ -54,17 +58,21 @@ public class ItemModelDetailFragment extends Fragment {
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mItem.Name);
             }
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.itemmodel_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.itemmodel_detail)).setText(mItem.Description);
+
+            // Show all the Fields
+            ((TextView) rootView.findViewById(R.id.ItemDetails_NameValue)).setText(mItem.Name);
+            ((TextView) rootView.findViewById(R.id.ItemDetails_DescriptionValue)).setText(mItem.Description);
         }
 
         return rootView;

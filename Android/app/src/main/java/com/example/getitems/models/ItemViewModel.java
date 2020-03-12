@@ -1,6 +1,4 @@
-package com.example.getitems.dummy;
-
-import org.w3c.dom.NameList;
+package com.example.getitems.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,27 +28,14 @@ public class ItemViewModel {
 
     static {
         // Add some sample items.
-        for (int i = 1; i <= COUNT; i++) {
-            addItem(createDummyItem(i));
-        }
+        addItem(new ItemModel("Smelly Jersey", "Smells so bad the monster won't come near you.", 5, 9, 9, "smelly_jersey.png"));
+        addItem(new ItemModel("Pad Lock", "Strong enough to lock anyone down.", 3, 0, 9, "padlock.png"));
+        addItem(new ItemModel("Shoes", "No one will be able to catch you in these.", 2, 0, 9, "shoe.png"));
     }
 
     private static void addItem(ItemModel item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
-    }
-
-    private static ItemModel createDummyItem(int position) {
-        return new ItemModel(5, 5, 5, "Item " + String.valueOf(position), "Just another item", "https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-12/256/goat.png");
-    }
-
-    private static String makeDetails(int position) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Details about Item: ").append(position);
-        for (int i = 0; i < position; i++) {
-            builder.append("\nMore details information here.");
-        }
-        return builder.toString();
     }
 
     /**
@@ -66,12 +51,12 @@ public class ItemViewModel {
         public final String Guid = id;
         public final String ImageURI;
 
-        public ItemModel(int Range, int Damage, int Value, String Name, String Description, String ImageURI) {
+        public ItemModel(String Name, String Description, int Range, int Damage, int Value, String ImageURI) {
+            this.Name = Name;
+            this.Description = Description;
             this.Range = Range;
             this.Damage = Damage;
             this.Value = Value;
-            this.Name = Name;
-            this.Description = Description;
             this.ImageURI = ImageURI;
         }
 
