@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.getitems.dummy.DummyContent;
+import com.example.getitems.dummy.ItemViewModel;
 
 import java.util.List;
 
@@ -69,19 +69,19 @@ public class ItemModelListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, ItemViewModel.ITEMS, mTwoPane));
     }
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final ItemModelListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<ItemViewModel.ItemModel> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+                ItemViewModel.ItemModel item = (ItemViewModel.ItemModel) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putString(ItemModelDetailFragment.ARG_ITEM_ID, item.id);
@@ -101,7 +101,7 @@ public class ItemModelListActivity extends AppCompatActivity {
         };
 
         SimpleItemRecyclerViewAdapter(ItemModelListActivity parent,
-                                      List<DummyContent.DummyItem> items,
+                                      List<ItemViewModel.ItemModel> items,
                                       boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
@@ -117,8 +117,8 @@ public class ItemModelListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.mIdView.setText(mValues.get(position).Name);
+            holder.mContentView.setText(mValues.get(position).Description);
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GetItems</string>
+    <string name="title_itemmodel_list">Items</string>
+    <string name="title_itemmodel_detail">ItemModel Detail</string>
+</resources>
