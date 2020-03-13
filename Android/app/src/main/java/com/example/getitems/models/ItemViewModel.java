@@ -28,9 +28,9 @@ public class ItemViewModel {
 
     static {
         // Add some sample items.
-        addItem(new ItemModel("Smelly Jersey", "Smells so bad the monster won't come near you.", 5, 9, 9, "smelly_jersey"));
-        addItem(new ItemModel("Pad Lock", "Strong enough to lock anyone down.", 3, 0, 9, "padlock"));
-        addItem(new ItemModel("Shoes", "No one will be able to catch you in these.", 2, 0, 9, "shoe"));
+        addItem(new ItemModel("Smelly Jersey", "Smells so bad the monster won't come near you.", 5, 9, 9, "smelly_jersey", ItemLocationEnum.Necklass));
+        addItem(new ItemModel("Pad Lock", "Strong enough to lock anyone down.", 3, 0, 9, "padlock", ItemLocationEnum.OffHand));
+        addItem(new ItemModel("Shoes", "No one will be able to catch you in these.", 2, 0, 9, "shoe", ItemLocationEnum.PrimaryHand));
     }
 
     private static void addItem(ItemModel item) {
@@ -50,14 +50,16 @@ public class ItemViewModel {
         public final String id = UUID.randomUUID().toString();
         public final String Guid = id;
         public final String ImageURI;
+        public final ItemLocationEnum Location;
 
-        public ItemModel(String Name, String Description, int Range, int Damage, int Value, String ImageURI) {
+        public ItemModel(String Name, String Description, int Range, int Damage, int Value, String ImageURI, ItemLocationEnum Location) {
             this.Name = Name;
             this.Description = Description;
             this.Range = Range;
             this.Damage = Damage;
             this.Value = Value;
             this.ImageURI = ImageURI;
+            this.Location = Location;
         }
 
         @Override
