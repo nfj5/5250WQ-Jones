@@ -57,6 +57,15 @@ public class ItemModelDetailFragment extends Fragment {
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mItem.Name);
+
+                // The id on the layout
+                ImageView image = ((ImageView) activity.findViewById(R.id.ItemModel_Image));
+
+//                // Get the image from the drawable folder
+                String uri = "@drawable/" + mItem.ImageURI;  // where myresource (without the extension) is the file
+                int imageResource = getResources().getIdentifier(uri, "drawable", "com.example.getitems");
+                Drawable res = getResources().getDrawable(imageResource);
+                image.setImageDrawable(res);
             }
 
         }

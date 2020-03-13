@@ -28,9 +28,9 @@ public class ItemViewModel {
 
     static {
         // Add some sample items.
-        addItem(new ItemModel("Smelly Jersey", "Smells so bad the monster won't come near you.", 5, 9, 9, "smelly_jersey.png"));
-        addItem(new ItemModel("Pad Lock", "Strong enough to lock anyone down.", 3, 0, 9, "padlock.png"));
-        addItem(new ItemModel("Shoes", "No one will be able to catch you in these.", 2, 0, 9, "shoe.png"));
+        addItem(new ItemModel("Smelly Jersey", "Smells so bad the monster won't come near you.", 5, 9, 9, "smelly_jersey"));
+        addItem(new ItemModel("Pad Lock", "Strong enough to lock anyone down.", 3, 0, 9, "padlock"));
+        addItem(new ItemModel("Shoes", "No one will be able to catch you in these.", 2, 0, 9, "shoe"));
     }
 
     private static void addItem(ItemModel item) {
