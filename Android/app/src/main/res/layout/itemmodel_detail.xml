@@ -70,4 +70,17 @@
             style="@style/ValueStyle"/>
     </LinearLayout>
 
+    <LinearLayout android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+
+        <TextView
+            android:id="@+id/ItemDetails_LocationLabel"
+            style="@style/LabelStyle"
+            android:text="Location: "/>
+        <TextView
+            android:id="@+id/ItemDetails_LocationValue"
+            style="@style/ValueStyle"/>
+    </LinearLayout>
+
 </LinearLayout>

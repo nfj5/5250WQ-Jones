@@ -78,13 +78,13 @@ public class ItemModelDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.itemmodel_detail, container, false);
 
         if (mItem != null) {
-
             // Show all the Fields
             ((TextView) rootView.findViewById(R.id.ItemDetails_NameValue)).setText(mItem.Name);
             ((TextView) rootView.findViewById(R.id.ItemDetails_DescriptionValue)).setText(mItem.Description);
             ((TextView) rootView.findViewById(R.id.ItemDetails_RangeValue)).setText(String.valueOf(mItem.Range));
             ((TextView) rootView.findViewById(R.id.ItemDetails_ValueValue)).setText(String.valueOf(mItem.Value));
             ((TextView) rootView.findViewById(R.id.ItemDetails_DamageValue)).setText(String.valueOf(mItem.Damage));
+            ((TextView) rootView.findViewById(R.id.ItemDetails_LocationValue)).setText(mItem.Location.toString());
         }
 
         return rootView;
