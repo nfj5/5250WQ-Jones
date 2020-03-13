@@ -4,8 +4,8 @@
     <color name="viewBackgroundColor">#60ADFF</color>
     <color name="navigationBarColor">#3270B3</color>
 
-    <color name="primaryBackgroundColor">#3270B3</color>
-    <color name="secondaryBackgroundColor">#60ADFF</color>
+    <color name="primaryBackgroundColor">#60ADFF</color>
+    <color name="secondaryBackgroundColor">#3270B3</color>
     <color name="triciaryBackgroundColor">#733612</color>
     <color name="lightBackgroundColor">#FFF4E8</color>
 
