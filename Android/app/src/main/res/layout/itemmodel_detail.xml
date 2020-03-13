@@ -31,4 +31,43 @@
             style="@style/ValueStyle"/>
     </LinearLayout>
 
+    <LinearLayout android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+
+        <TextView
+            android:id="@+id/ItemDetails_RangeLabel"
+            style="@style/LabelStyle"
+            android:text="Range: "/>
+        <TextView
+            android:id="@+id/ItemDetails_RangeValue"
+            style="@style/ValueStyle"/>
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+
+        <TextView
+            android:id="@+id/ItemDetails_ValueLabel"
+            style="@style/LabelStyle"
+            android:text="Value: "/>
+        <TextView
+            android:id="@+id/ItemDetails_ValueValue"
+            style="@style/ValueStyle"/>
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+
+        <TextView
+            android:id="@+id/ItemDetails_DamageLabel"
+            style="@style/LabelStyle"
+            android:text="Damage: "/>
+        <TextView
+            android:id="@+id/ItemDetails_DamageValue"
+            style="@style/ValueStyle"/>
+    </LinearLayout>
+
 </LinearLayout>
