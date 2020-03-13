@@ -118,7 +118,7 @@ public class ItemModelListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mIdView.setText(mValues.get(position).Name);
-            holder.mContentView.setText(mValues.get(position).Description);
+            holder.mContentView.setText(String.valueOf(mValues.get(position).Value));
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
