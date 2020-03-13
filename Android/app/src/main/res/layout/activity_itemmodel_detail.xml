@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".ItemModelDetailActivity"
+    android:background="@color/primaryBackgroundColor"
     tools:ignore="MergeRootFrame">
 
     <com.google.android.material.appbar.AppBarLayout
